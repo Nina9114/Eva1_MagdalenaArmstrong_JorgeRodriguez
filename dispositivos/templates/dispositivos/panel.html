@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Dispositivos</title>
+</head>
+<body>
+    <h1>Panel de Dispositivos Conectados</h1>
+    <p>Consumo máximo permitido: {{ consumo_maximo }} W</p>
+
+    <ul>
+        {% for d in dispositivos %}
+            <li>
+                {{ d.nombre }} - Consumo: {{ d.consumo }} W
+                {% if d.consumo > consumo_maximo %}
+                    ⚠️ <strong>Supera el límite</strong>
+                {% else %}
+                    ✅ Dentro del rango
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <p><strong>Total dispositivos críticos:</strong> {{ criticos }}</p>
+</body>
+</html>
