@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3 class="mb-3">Dashboard</h3>
+
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">Devices by Category</div>
+      <ul class="list-group list-group-flush">
+        {% for row in devices_by_category %}
+          <li class="list-group-item d-flex justify-content-between">
+            <span>{{ row.category__name }}</span><span>{{ row.total }}</span>
+          </li>
+        {% empty %}
+          <li class="list-group-item text-muted">No data available</li>
+        {% endfor %}
+      </ul>
+      <div class="card-footer"><a href="{% url 'devices_list' %}">View devices</a></div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">Devices by Zone</div>
+      <ul class="list-group list-group-flush">
+        {% for row in devices_by_zone %}
+          <li class="list-group-item d-flex justify-content-between">
+            <span>{{ row.zone__name }}</span><span>{{ row.total }}</span>
+          </li>
+        {% empty %}
+          <li class="list-group-item text-muted">No data available</li>
+        {% endfor %}
+      </ul>
+      <div class="card-footer"><a href="{% url 'devices_list' %}">View devices</a></div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">Alerts (last 7 days)</div>
+      <ul class="list-group list-group-flush">
+        {% for row in alerts_week %}
+          <li class="list-group-item d-flex justify-content-between">
+            <span>{{ row.severity }}</span><span>{{ row.total }}</span>
+          </li>
+        {% empty %}
+          <li class="list-group-item text-muted">No alerts this week</li>
+        {% endfor %}
+      </ul>
+      <div class="card-footer"><a href="{% url 'devices_list' %}">View related</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="card mt-4">
+  <div class="card-header">Last 10 Measurements</div>
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead><tr><th>Date/Time</th><th>Device</th><th>Value</th></tr></thead>
+      <tbody>
+        {% for m in last_measurements %}
+          <tr><td>{{ m.created_at }}</td><td>{{ m.device.name }}</td><td>{{ m.value }}</td></tr>
+        {% empty %}
+          <tr><td colspan="3" class="text-muted">No data available</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="mt-4">
+  <h5>Recent Alerts</h5>
+  <ul class="list-group">
+    {% for a in recent_alerts %}
+      <li class="list-group-item d-flex justify-content-between">
+        <span>{{ a.device.name }} — {{ a.message }}</span><span class="badge bg-dark">{{ a.severity }}</span>
+      </li>
+    {% empty %}
+      <li class="list-group-item text-muted">No recent alerts</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3>{{ device.name }}</h3>
+<p class="text-muted">Category: {{ device.category.name }} | Zone: {{ device.zone.name }}</p>
+
+<h5 class="mt-4">Measurements</h5>
+<div class="table-responsive">
+  <table class="table">
+    <thead><tr><th>Date/Time</th><th>Value</th></tr></thead>
+    <tbody>
+      {% for m in measurements %}
+        <tr><td>{{ m.created_at }}</td><td>{{ m.value }}</td></tr>
+      {% empty %}
+        <tr><td colspan="2" class="text-muted">No measurements available</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<h5 class="mt-4">Alerts</h5>
+<ul class="list-group">
+  {% for a in alerts %}
+    <li class="list-group-item d-flex justify-content-between">
+      <span>{{ a.message }}</span>
+      <span class="badge bg-dark">{{ a.severity }}</span>
+    </li>
+  {% empty %}
+    <li class="list-group-item text-muted">No alerts for this device</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
